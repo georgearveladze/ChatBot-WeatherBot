@@ -1,19 +1,51 @@
 @startuml
-User -> Subscription_bot : send message to bot
-activate Subscription_bot
-Subscription_bot -> Telegram_Api : send message to telegram_Api
+!theme aws-orange
+User -> subscription_bot : User request
+activate subscription_bot
+subscription_bot -> Telegram_Api : User request
+deactivate
 activate Telegram_Api
-Telegram_Api -> App : send message
-activate App
-App -> Weather_Api : send request
-activate Weather_Api
-
-Weather_Api --> App :send response 
-deactivate Weather_Api
-App --> Telegram_Api : response
-deactivate App
-Telegram_Api --> Subscription_bot:response 
+deactivate
+Telegram_Api -> App : User request
 deactivate Telegram_Api
-Subscription_bot --> User : delivered sms 
-deactivate User
+activate App
+App -> service :User request
+activate service
+service -> database :Save User location to Database
+deactivate
+
+App-> User : response : Response to User === Request to User time
+deactivate App
+
+User-> Subscription_bot : User response ===== set time to resive the answer
+activate Subscription_bot
+Subscription_bot -> Telegram_Api : User request
+deactivate Subscription_bot
+activate Telegram_Api
+Telegram_Api -> App : User request
+deactivate Telegram_Api
+activate App
+
+App -> service :User request
+deactivate
+activate service
+
+service -> database : Save User Time to Database
+deactivate
+
+database-> cron : Sent saved data to corn
+activate database
+activate cron
+
+cron -> database: Chaking data to Database
+deactivate database
+
+cron -> whetherapi: when thee time mathed sent response to User
+deactivate cron
+activate whetherapi
+whetherapi -> App : Finale response to User
+deactivate
+activate App
+App -> User : Report finle Response:location, wether
+deactivate
 @enduml
