@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const connect = async () => {
+module.exports = async function connect() {
   try {
     await mongoose.connect(process.env.MONGO_URL);
 
@@ -11,5 +11,3 @@ const connect = async () => {
     throw error;
   }
 };
-
-module.exports = connect;

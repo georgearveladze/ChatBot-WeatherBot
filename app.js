@@ -1,12 +1,16 @@
 const TelegramBot = require('node-telegram-bot-api');
 const CronJob = require('cron').CronJob;
 const db = require('./connect');
-const register = require('./register');
-const addTime = require('./addTime');
-const getWeather = require('./weather');
-const findUsersOnDate = require('./cron');
+const UserService = require('./user-servise');
+const TimeSet = require('./addTime');
+const Weather = require('./weather');
 const botton = require('./botton');
 require('dotenv').config();
+
+const userService = new UserService();
+const timeset = new TimeSet();
+const weatherApi = new Weather();
+
 const descText =
   "Hello I'm weather Bot, You can subscribe and get daily forecast on time!, If you send time again, Your subscribtion will be updated";
 
@@ -26,13 +30,15 @@ const descText =
   });
 
   bot.onText(botton.regEx, async (msg) => {
-    await addTime(msg.chat.id, msg.text);
+    const chatId = msg.chat.id;
+    const time = msg.text;
+    await timeset.addTime(chatId, time);
 
     bot.sendMessage(msg.chat.id, 'Your time is saved.');
   });
 
   bot.on('location', async (msg) => {
-    await register(msg.chat.id, msg.location);
+    await userService.register(msg.chat.id, msg.location);
 
     bot.sendMessage(
       msg.chat.id,
@@ -44,10 +50,10 @@ const descText =
     '* * * * *',
     async () => {
       const data = new Date();
-      const users = await findUsersOnDate(data);
+      const users = await userService.findUsersOnDate(data);
 
       for (const user of users) {
-        const weather = await getWeather(user.location);
+        const weather = await weatherApi.getWeather(user.location);
         bot.sendMessage(user.chatId, `<i>${weather}</i>`, {
           parse_mode: 'HTML',
         });
