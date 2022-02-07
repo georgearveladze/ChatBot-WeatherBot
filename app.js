@@ -2,13 +2,12 @@ const TelegramBot = require('node-telegram-bot-api');
 const CronJob = require('cron').CronJob;
 const db = require('./connect');
 const UserService = require('./user-servise');
-const TimeSet = require('./addTime');
+const TimeFromatting = require('./addTime');
 const Weather = require('./weather');
 const requestLocbutton = require('./button');
 require('dotenv').config();
 
 const userService = new UserService();
-const timeset = new TimeSet();
 const weatherApi = new Weather();
 
 const descText =
@@ -35,7 +34,7 @@ const descText =
   bot.onText(requestLocbutton.regEx, async (msg) => {
     const chatId = msg.chat.id;
     const time = msg.text;
-    await timeset.addTime(chatId, time);
+    TimeFromatting.addTime(chatId, time);
 
     bot.sendMessage(msg.chat.id, 'Your time is saved.');
   });
