@@ -7,5 +7,5 @@ const userSchema = new Schema({
   location: Object,
 });
 
-const User = mongoose.model('task5', userSchema);
+const User = mongoose.model('subscriptions', userSchema);
 module.exports = User;

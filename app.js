@@ -4,7 +4,7 @@ const db = require('./connect');
 const UserService = require('./user-servise');
 const TimeSet = require('./addTime');
 const Weather = require('./weather');
-const botton = require('./botton');
+const requestLocbutton = require('./button');
 require('dotenv').config();
 
 const userService = new UserService();
@@ -16,20 +16,23 @@ const descText =
 
 (async () => {
   await db();
-  botton.regEx;
-  botton.button;
+  requestLocbutton.regEx;
+  requestLocbutton.button;
   const bot = new TelegramBot(process.env.TOKEN, { polling: true });
   bot.on('message', (msg) => {
     if (msg.text == '/description') {
       return bot.sendMessage(msg.chat.id, descText);
     }
 
-    if (typeof msg.text === 'string' && !botton.regEx.test(msg.text)) {
+    if (
+      typeof msg.text === 'string' &&
+      !requestLocbutton.regEx.test(msg.text)
+    ) {
       return bot.sendMessage(msg.chat.id, 'wrong request,please enter  /start');
     }
   });
 
-  bot.onText(botton.regEx, async (msg) => {
+  bot.onText(requestLocbutton.regEx, async (msg) => {
     const chatId = msg.chat.id;
     const time = msg.text;
     await timeset.addTime(chatId, time);

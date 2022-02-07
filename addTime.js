@@ -13,6 +13,7 @@ class TimeSet {
       .format('HH:mm');
     return converted;
   }
+
   async addTime(chatId, time) {
     const existingUser = await User.findOne({ chatId: chatId });
 
@@ -26,4 +27,5 @@ class TimeSet {
     }
   }
 }
+
 module.exports = TimeSet;
