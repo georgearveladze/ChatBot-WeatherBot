@@ -1,4 +1,4 @@
-const regEx = /^([0-1][0-9]|[2][0-3]):([0-5][0-9])$/;
+const timeFormatRegEx = /^([0-1][0-9]|[2][0-3]):([0-5][0-9])$/;
 const requestLocbutton = {
   reply_markup: {
     keyboard: [[{ text: '/start', request_location: true }, '/Description']],
@@ -8,4 +8,4 @@ const requestLocbutton = {
   },
 };
 
-module.exports = { requestLocbutton, regEx };
+module.exports = { requestLocbutton, timeFormatRegEx };

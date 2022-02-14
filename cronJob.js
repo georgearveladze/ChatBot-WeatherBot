@@ -10,10 +10,10 @@ class Cron {
   }
   async setSchedule() {
     cronJob.schedule(
-      ' * * * * *',
+      '  * * * * *',
       async () => {
-        const data = new Date();
-        const users = await this.userService.findUsersOnDate(data);
+        const date = new Date();
+        const users = await this.userService.findUsersOnDate(date);
 
         for (const user of users) {
           const weather = await this.weatherApi.getWeather(user.location);

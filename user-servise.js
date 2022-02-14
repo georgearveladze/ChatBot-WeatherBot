@@ -1,4 +1,5 @@
 const User = require('./mongoose-models');
+const searchUser = require('./helpers');
 
 class UserService {
   async register(chatId, location, time) {
@@ -10,15 +11,8 @@ class UserService {
 
     return await user.save();
   }
-
   async findUsersOnDate(date) {
-    let hour = await date.getUTCHours().toString();
-    let minute = await date.getUTCMinutes().toString();
-    if (hour.length === 1) {
-      hour = '0' + hour;
-    }
-    if (minute.length === 1) minute = '0' + minute;
-    const time = `${hour}:${minute}`;
+    const time = await searchUser(date);
     return await User.find({ time });
   }
 }

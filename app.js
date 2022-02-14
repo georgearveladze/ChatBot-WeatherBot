@@ -15,7 +15,7 @@ const descText =
 
 (async () => {
   await db();
-  requestLocbutton.regEx;
+  requestLocbutton.timeFormatRegEx;
   requestLocbutton.button;
   const bot = new TelegramBot(process.env.TOKEN, { polling: true });
   const cron = new Cron(bot);
@@ -27,13 +27,13 @@ const descText =
 
     if (
       typeof msg.text === 'string' &&
-      !requestLocbutton.regEx.test(msg.text)
+      !requestLocbutton.timeFormatRegEx.test(msg.text)
     ) {
       return bot.sendMessage(msg.chat.id, 'wrong request,please enter  /start');
     }
   });
 
-  bot.onText(requestLocbutton.regEx, async (msg) => {
+  bot.onText(requestLocbutton.timeFormatRegEx, async (msg) => {
     const chatId = msg.chat.id;
     const time = msg.text;
     await addTime.addTime(chatId, time);
