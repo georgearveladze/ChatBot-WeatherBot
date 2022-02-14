@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon app.js",
+    "dev": "nodemon ./src/core/index.js",
     "check-prettier": "prettier --write"
   },
   "lint-staged": {
