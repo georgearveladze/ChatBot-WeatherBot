@@ -17,9 +17,9 @@ class UserService {
     if (hour.length === 1) {
       hour = '0' + hour;
     }
-    if (minute.lenght === 1) minute = '0' + minute;
+    if (minute.length === 1) minute = '0' + minute;
     const time = `${hour}:${minute}`;
-    return User.find({ time });
+    return await User.find({ time });
   }
 }
 

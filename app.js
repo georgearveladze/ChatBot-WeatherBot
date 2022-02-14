@@ -1,14 +1,14 @@
 const TelegramBot = require('node-telegram-bot-api');
-const CronJob = require('cron').CronJob;
+
 const db = require('./connect');
 const UserService = require('./user-servise');
-const TimeFromatting = require('./addTime');
-const Weather = require('./weather');
+const AddTime = require('./addTime');
+const Cron = require('./cronJob');
 const requestLocbutton = require('./button');
 require('dotenv').config();
 
 const userService = new UserService();
-const weatherApi = new Weather();
+const addTime = new AddTime();
 
 const descText =
   "Hello I'm weather Bot, You can subscribe and get daily forecast on time!, If you send time again, Your subscribtion will be updated";
@@ -18,6 +18,8 @@ const descText =
   requestLocbutton.regEx;
   requestLocbutton.button;
   const bot = new TelegramBot(process.env.TOKEN, { polling: true });
+  const cron = new Cron(bot);
+
   bot.on('message', (msg) => {
     if (msg.text == '/description') {
       return bot.sendMessage(msg.chat.id, descText);
@@ -34,8 +36,8 @@ const descText =
   bot.onText(requestLocbutton.regEx, async (msg) => {
     const chatId = msg.chat.id;
     const time = msg.text;
-    TimeFromatting.addTime(chatId, time);
-
+    await addTime.addTime(chatId, time);
+    await cron.setSchedule();
     bot.sendMessage(msg.chat.id, 'Your time is saved.');
   });
 
@@ -47,23 +49,4 @@ const descText =
       'Your location is saved,please time add time...'
     );
   });
-
-  const cron = new CronJob(
-    '* * * * *',
-    async () => {
-      const data = new Date();
-      const users = await userService.findUsersOnDate(data);
-
-      for (const user of users) {
-        const weather = await weatherApi.getWeather(user.location);
-        bot.sendMessage(user.chatId, `<i>${weather}</i>`, {
-          parse_mode: 'HTML',
-        });
-      }
-    },
-    null,
-    null,
-    'Europe/London'
-  );
-  cron.start();
 })();
