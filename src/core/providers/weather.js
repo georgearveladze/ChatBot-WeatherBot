@@ -1,12 +1,14 @@
 const axios = require('axios');
-require('dotenv').config();
+const config = require('../../config/config');
 const ABSTRACT_API_KEY = process.env.API_KEY;
 
 class Weather {
   async getWeather(coordinate) {
     const { latitude: lat, longitude: lon } = coordinate;
     const { data } = await axios.get(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${ABSTRACT_API_KEY}&units=metric`
+      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${
+        config().weather.key
+      }&units=metric`
     );
     const { name, main, weather } = data;
 

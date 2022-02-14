@@ -1,6 +1,5 @@
 const TelegramBot = require('node-telegram-bot-api');
 
-const db = require('../database/connect');
 const UserService = require('../database/services/user-servise');
 const AddTime = require('../database/services/addTime');
 const Cron = require('../cron/cronJob');
@@ -12,12 +11,14 @@ const addTime = new AddTime();
 const descText =
   "Hello I'm weather Bot, You can subscribe and get daily forecast on time!, If you send time again, Your subscribtion will be updated";
 
+const bot = new TelegramBot(config().bot.token, { polling: true });
+const cron = new Cron(bot);
+
 const start = async () => {
-  await db();
   requestLocbutton.timeFormatRegEx;
   requestLocbutton.button;
-  const bot = new TelegramBot(config().bot.token, { polling: true });
-  const cron = new Cron(bot);
+
+  await cron.setSchedule();
 
   bot.on('message', (msg) => {
     if (msg.text == '/description') {
@@ -36,7 +37,7 @@ const start = async () => {
     const chatId = msg.chat.id;
     const time = msg.text;
     await addTime.addTime(chatId, time);
-    await cron.setSchedule();
+
     bot.sendMessage(msg.chat.id, 'Your time is saved.');
   });
 
@@ -50,4 +51,4 @@ const start = async () => {
   });
 };
 
-module.exports = start;
+module.exports = { start, cron };

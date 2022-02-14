@@ -8,6 +8,9 @@ const config = () => {
     bot: {
       token: process.env.TOKEN,
     },
+    weather: {
+      key: process.env.API_KEY,
+    },
   };
 };
 
