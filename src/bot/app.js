@@ -15,9 +15,6 @@ const bot = new TelegramBot(config().bot.token, { polling: true });
 const cron = new Cron(bot);
 
 const start = async () => {
-  requestLocbutton.timeFormatRegEx;
-  requestLocbutton.button;
-
   bot.on('message', (msg) => {
     if (msg.text == '/description') {
       return bot.sendMessage(msg.chat.id, descText);
