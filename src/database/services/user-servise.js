@@ -1,5 +1,5 @@
 const User = require('../schema/mongoose-models');
-const searchUser = require('../../../utils/formatTime');
+const searchUser = require('../../utils/formatTime');
 
 class UserService {
   async register(chatId, location, time) {

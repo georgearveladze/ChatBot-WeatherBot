@@ -1,5 +1,5 @@
 const User = require('../schema/mongoose-models');
-const { convertTime } = require('../../../utils/timeConverter');
+const { convertTime } = require('../../utils/timeConverter');
 
 class AddTime {
   async addTime(chatId, time) {

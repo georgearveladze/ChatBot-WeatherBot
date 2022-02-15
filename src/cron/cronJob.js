@@ -17,7 +17,6 @@ class Cron {
         const users = await this.userService.findUsersOnDate(date);
 
         for (const user of users) {
-          //console.log(user);
           const weather = await this.weather.getWeather(user.location);
 
           this.bot.sendMessage(user.chatId, `<i>${weather}</i>`, {

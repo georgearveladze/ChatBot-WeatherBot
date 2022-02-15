@@ -4,7 +4,7 @@ const UserService = require('../database/services/user-servise');
 const AddTime = require('../database/services/addTime');
 const Cron = require('../cron/cronJob');
 const requestLocbutton = require('./components/button');
-const config = require('../../config/config');
+const config = require('../config/config');
 const userService = new UserService();
 const addTime = new AddTime();
 
@@ -17,8 +17,6 @@ const cron = new Cron(bot);
 const start = async () => {
   requestLocbutton.timeFormatRegEx;
   requestLocbutton.button;
-
-  await cron.setSchedule();
 
   bot.on('message', (msg) => {
     if (msg.text == '/description') {

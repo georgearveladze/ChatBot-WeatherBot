@@ -1,5 +1,5 @@
 const axios = require('axios');
-const config = require('../../config/config');
+const config = require('../config/config');
 const ABSTRACT_API_KEY = process.env.API_KEY;
 
 class Weather {
